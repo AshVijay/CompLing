@@ -1,0 +1,91 @@
+tr '[:upper:]' '[:lower:]' < DA.txt > output.txt
+
+##To replace conjunctions
+sed "s/shan't/shall not/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/'d/ would/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/'m/ am/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/n't/ not/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/'s/ is/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/'ll/ all/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/'ve/ have/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/'re/ are/g" output.txt > temp.txt
+cat temp.txt > output.txt
+
+##To replace quotes, commas , question marks and fullstops
+sed 's/[\.][\.][\.]/\./' output.txt > temp.txt
+cat temp.txt > output.txt
+sed  's/\"[ ,]/ /2g' output.txt >  temp.txt
+cat temp.txt > output.txt
+sed 's/[ ,]\"/ /g' output.txt > temp.txt
+cat temp.txt > output.txt
+sed  "s/'[ ,]/ /g" output.txt >  temp.txt
+cat temp.txt > output.txt
+sed "s/[ ,]'/ /g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed 's/[?!.]\"/@/g' output.txt > temp.txt
+cat temp.txt > output.txt
+sed 's/\"//g' output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/.'/@/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/[?!.]'/@/g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/'//g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/?/ /g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/,/ /g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/;/ /g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/*/ /g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed "s/\!/ /g" output.txt > temp.txt
+cat temp.txt > output.txt
+sed 's/[\.]/@/g' output.txt > temp.txt
+cat temp.txt > output.txt
+sed 's/  */ /g' output.txt > temp.txt
+cat temp.txt > output.txt
+sed 's/  / /g' output.txt > temp.txt
+cat temp.txt > output.txt
+sed 's/@@*/@/g' output.txt > temp.txt
+cat temp.txt > output.txt
+sed 's/@/ @/g' output.txt > temp.txt
+cat temp.txt > output.txt
+
+##To generate the unigram and bigram
+egrep -o '[a-z@]+' output.txt > unig1.txt
+sort < unig1.txt | uniq -c | sort -n -r > unigram.txt
+tail -n+2 unig1.txt > unig2.txt
+paste unig1.txt unig2.txt > pairs.txt
+sort < pairs.txt | uniq -c | sort -n -r > bigrams.txt
+
+
+sed -e 's/^/unigram(/g' unigram.txt > temp.txt
+sed -e 's/$/)./g' temp.txt > unigram.txt
+sed 's/ [ ][ a-zA-Z0-9]//g' unigram.txt > temp.txt
+sed -E 's/ ([0-9][0-9][0-9])/\1/' temp.txt > unigram.txt   
+sed 's/ /,/g' unigram.txt > temp.txt
+cat temp.txt > unigram.txt
+
+
+sed -e 's/^/bigram(/g' bigrams.txt > temp.txt
+sed -e 's/$/)./' temp.txt > bigrams.txt
+sed 's/[ ] [ ]//' bigrams.txt > temp.txt
+sed 's/  //' temp.txt > bigrams.txt
+sed 's/\t/ /' bigrams.txt > temp.txt
+sed -E 's/ ([0-9][0-9][0-9])/\1/' temp.txt > bigrams.txt 
+sed 's/ /,/g' bigrams.txt > temp.txt
+sed -E 's/,([0-9])/\1/' temp.txt > bigrams.txt
+
+
+
+
+
